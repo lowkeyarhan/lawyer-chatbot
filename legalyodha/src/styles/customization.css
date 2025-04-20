@@ -24,10 +24,10 @@
 .hero-image-3d {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   height: 400px;
   perspective: 1000px;
-  margin-left: auto;
+  margin: 0;
 }
 
 .hero-device-frame {
