@@ -5,7 +5,6 @@ import HeroSection from "../components/HeroSection";
 import FeaturesSection from "../components/FeaturesSection";
 import TestimonialsSection from "../components/TestimonialsSection";
 import FAQSection from "../components/FAQSection";
-import CTASection from "../components/CTASection";
 import UseCasesSection from "../components/UseCasesSection";
 
 function LandingPage() {
@@ -62,7 +61,6 @@ function LandingPage() {
         <TestimonialsSection />
         <UseCasesSection />
         <FAQSection />
-        <CTASection />
       </main>
       <Footer />
     </div>

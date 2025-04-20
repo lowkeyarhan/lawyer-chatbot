@@ -23,27 +23,70 @@ function Footer() {
   };
 
   return (
-    <footer className="footer">
-      <div className="container">
-        <div className="footer-content">
-          <div className="footer-logo">
+    <footer className="footer-cta-wrapper">
+      <div className="cta-container">
+        <div className="cta-badges">
+          <div className="cta-badge">
+            <span className="badge-icon">$</span>
+            <span>Money back guarantee</span>
+          </div>
+          <div className="cta-badge">
+            <span className="badge-icon">★</span>
+            <span>Free trial</span>
+          </div>
+          <div className="cta-badge">
+            <span className="badge-icon">✕</span>
+            <span>Cancel anytime</span>
+          </div>
+        </div>
+
+        <div className="cta-headline">
+          <h2>
+            LegalYodha protects
+            <br />
+            your rights and wallet
+          </h2>
+        </div>
+
+        <div className="cta-button-container">
+          <Link to="/" className="cta-button">
+            Try for free
+          </Link>
+        </div>
+      </div>
+
+      <div className="footer-container">
+        <div className="footer-logo-section">
+          <div className="logo">
             <svg
-              className="footer-logo-icon"
-              viewBox="0 0 32 32"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect width="32" height="32" rx="8" fill="#7C3AED" />
+              <path d="M12 2L2 7l10 5 10-5-10-5z" fill="currentColor" />
               <path
-                d="M10 10H22V12H21V22H23V24H9V22H11V12H10V10ZM13 12V22H19V12H13ZM14 14H18V15H14V14ZM14 17H18V18H14V17Z"
-                fill="white"
+                d="M2 17l10 5 10-5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M2 12l10 5 10-5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
-            <span className="footer-logo-text">legalyodha</span>
+            <span>LegalYodha</span>
           </div>
+          <p className="copyright">©2025 LegalYodha. All rights reserved.</p>
 
-          <div className="footer-social">
-            <a href="#" className="social-icon" aria-label="Twitter">
+          <div className="social-icons">
+            <a href="#" aria-label="Twitter">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -58,7 +101,7 @@ function Footer() {
                 <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
               </svg>
             </a>
-            <a href="#" className="social-icon" aria-label="TikTok">
+            <a href="#" aria-label="TikTok">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -75,7 +118,7 @@ function Footer() {
                 <path d="M10 12h8"></path>
               </svg>
             </a>
-            <a href="#" className="social-icon" aria-label="YouTube">
+            <a href="#" aria-label="YouTube">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -91,7 +134,7 @@ function Footer() {
                 <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
               </svg>
             </a>
-            <a href="#" className="social-icon" aria-label="Instagram">
+            <a href="#" aria-label="Instagram">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -108,7 +151,7 @@ function Footer() {
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
               </svg>
             </a>
-            <a href="#" className="social-icon" aria-label="Facebook">
+            <a href="#" aria-label="Facebook">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -123,7 +166,7 @@ function Footer() {
                 <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
               </svg>
             </a>
-            <a href="#" className="social-icon" aria-label="Pinterest">
+            <a href="#" aria-label="Pinterest">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -142,11 +185,13 @@ function Footer() {
           </div>
         </div>
 
-        <div className="footer-links">
-          <div className="footer-links-group">
-            <div className="footer-links-title">Other pages</div>
-            <div className="footer-links-items">
+        <div className="footer-links-section">
+          <div className="other-pages">
+            <span>Other pages</span>
+
+            <div className="footer-nav">
               <Link to="#">Affiliate</Link>
+
               <div className={`footer-dropdown ${companyOpen ? "open" : ""}`}>
                 <div
                   className="footer-dropdown-header"
@@ -174,6 +219,7 @@ function Footer() {
                   <Link to="#">Contact</Link>
                 </div>
               </div>
+
               <div className={`footer-dropdown ${faqOpen ? "open" : ""}`}>
                 <div
                   className="footer-dropdown-header"
@@ -201,6 +247,7 @@ function Footer() {
                   <Link to="#">Pricing</Link>
                 </div>
               </div>
+
               <div className={`footer-dropdown ${termsOpen ? "open" : ""}`}>
                 <div
                   className="footer-dropdown-header"
@@ -232,11 +279,6 @@ function Footer() {
           </div>
         </div>
 
-        <div className="footer-bottom">
-          <p className="footer-copyright">
-            ©{new Date().getFullYear()} LegalYodha. All rights reserved.
-          </p>
-        </div>
       </div>
     </footer>
   );
