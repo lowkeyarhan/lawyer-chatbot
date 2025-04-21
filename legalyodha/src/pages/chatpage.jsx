@@ -13,6 +13,13 @@ const ChatPage = () => {
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [conversations, setConversations] = useState([
+    { id: 1, title: "Understanding Employment Rights", active: true },
+    { id: 2, title: "Landlord Tenant Dispute", active: false },
+    { id: 3, title: "Contract Review Assistance", active: false },
+    { id: 4, title: "Divorce Process Questions", active: false },
+  ]);
   const inputRef = useRef(null);
   const messagesEndRef = useRef(null);
 
@@ -58,6 +65,37 @@ const ChatPage = () => {
       setMessages((prev) => [...prev, botMessage]);
       setIsTyping(false);
     }, 1500);
+  };
+
+  const toggleSidebar = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
+  };
+
+  const handleConversationSelect = (id) => {
+    setConversations(
+      conversations.map((conv) => ({
+        ...conv,
+        active: conv.id === id,
+      }))
+    );
+    // In a real application, you would load the selected conversation here
+  };
+
+  const startNewChat = () => {
+    // Create a new conversation
+    const newId = Date.now();
+    setConversations([
+      { id: newId, title: "New Conversation", active: true },
+      ...conversations.map((conv) => ({ ...conv, active: false })),
+    ]);
+    setMessages([
+      {
+        id: 1,
+        type: "bot",
+        text: "Hello! I'm your AI legal assistant. How can I help you today?",
+      },
+    ]);
+    setInput("");
   };
 
   const getBotResponse = (userInput) => {
@@ -143,25 +181,6 @@ const ChatPage = () => {
     <div className="chat-fullscreen">
       <header className="chat-header-fullscreen">
         <div className="chat-header-left">
-          <Link to="/">
-            <button className="chat-back-btn">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                />
-              </svg>
-            </button>
-          </Link>
           <div className="chat-logo">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -180,10 +199,31 @@ const ChatPage = () => {
               />
             </svg>
             <span>LegalYodha</span>
+            <button
+              className="sidebar-toggle-btn"
+              onClick={toggleSidebar}
+              aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d={sidebarCollapsed ? "M4 6h16M4 12h16M4 18h7" : "M4 6h16M4 12h16M4 18h16"}
+                />
+              </svg>
+            </button>
           </div>
         </div>
         <div className="chat-header-actions">
-          <button className="chat-header-btn">
+          <button className="chat-header-btn" onClick={startNewChat}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -196,7 +236,7 @@ const ChatPage = () => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                d="M12 4v16m8-8H4"
               />
             </svg>
             <span>New Chat</span>
@@ -223,42 +263,91 @@ const ChatPage = () => {
       </header>
 
       <div className="chat-fullscreen-container">
-        <aside className="sidebar">
-          <div className="sidebar-header">
-            <h2>Legal Prompts</h2>
-            <p>Choose a prompt to get started</p>
-          </div>
-
-          <div className="prompt-categories">
-            {legalPrompts.map((category) => (
-              <div
-                key={category.category}
-                className={`prompt-category ${
-                  activeCategory === category.category ? "active" : ""
-                }`}
-                onClick={() => setActiveCategory(category.category)}
-              >
-                {category.category}
-              </div>
-            ))}
-          </div>
-
-          <div className="prompts-list">
-            {legalPrompts
-              .find((cat) => cat.category === activeCategory)
-              ?.prompts.map((prompt, index) => (
-                <div
-                  key={index}
-                  className="prompt-item"
-                  onClick={() => handlePromptClick(prompt)}
+        <aside className={`sidebar ${sidebarCollapsed ? "collapsed" : ""}`}>
+          <div className="sidebar-section conversations-section">
+            <div className="sidebar-section-header">
+              <h2>Conversations</h2>
+              <button className="new-chat-btn" onClick={startNewChat}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  <div className="prompt-icon">{prompt.icon}</div>
-                  <div className="prompt-content">
-                    <h3>{prompt.title}</h3>
-                    <p>{prompt.description}</p>
-                  </div>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="conversations-list">
+              {conversations.map((conv) => (
+                <div
+                  key={conv.id}
+                  className={`conversation-item ${conv.active ? "active" : ""}`}
+                  onClick={() => handleConversationSelect(conv.id)}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                    />
+                  </svg>
+                  <span>{conv.title}</span>
                 </div>
               ))}
+            </div>
+          </div>
+
+          <div className="sidebar-section">
+            <div className="sidebar-section-header">
+              <h2>Legal Prompts</h2>
+            </div>
+            <div className="prompt-categories">
+              {legalPrompts.map((category) => (
+                <div
+                  key={category.category}
+                  className={`prompt-category ${
+                    activeCategory === category.category ? "active" : ""
+                  }`}
+                  onClick={() => setActiveCategory(category.category)}
+                >
+                  {category.category}
+                </div>
+              ))}
+            </div>
+
+            <div className="prompts-list">
+              {legalPrompts
+                .find((cat) => cat.category === activeCategory)
+                ?.prompts.map((prompt, index) => (
+                  <div
+                    key={index}
+                    className="prompt-item"
+                    onClick={() => handlePromptClick(prompt)}
+                  >
+                    <div className="prompt-icon">{prompt.icon}</div>
+                    <div className="prompt-content">
+                      <h3>{prompt.title}</h3>
+                      <p>{prompt.description}</p>
+                    </div>
+                  </div>
+                ))}
+            </div>
           </div>
         </aside>
 
@@ -330,14 +419,60 @@ const ChatPage = () => {
           </div>
 
           <form onSubmit={handleSubmit} className="chat-input-container">
-            <input
-              type="text"
-              className="chat-input"
-              placeholder="Type your message here..."
-              value={input}
-              onChange={handleInputChange}
-              ref={inputRef}
-            />
+            <div className="input-wrapper">
+              <input
+                type="text"
+                className="chat-input"
+                placeholder="Type a message..."
+                value={input}
+                onChange={handleInputChange}
+                ref={inputRef}
+              />
+              <div className="input-actions">
+                <button
+                  type="button"
+                  className="input-action-btn"
+                  aria-label="Upload files"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
+                    />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  className="input-action-btn"
+                  aria-label="Voice input"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
             <Button type="submit" className="chat-send-btn">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
